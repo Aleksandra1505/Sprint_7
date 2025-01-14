@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# pytest
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.hypothesis/
+
+# MyPy
+.mypy_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# MacOS specific files
+.DS_Store

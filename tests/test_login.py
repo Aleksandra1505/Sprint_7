@@ -74,8 +74,3 @@ class TestLoginCourier:
 
         assert login_response.status_code == 404
         assert login_response.json().get("message") == "Учетная запись не найдена"
-
-
-
-
-

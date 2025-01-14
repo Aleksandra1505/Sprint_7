@@ -6,7 +6,6 @@ from helpers import generate_login_password_name
 COURIER_EXIST_MESSAGE = "Этот логин уже существует"
 CREATE_ACCOUNT_NOT_ENOUGH_DATA = "Недостаточно данных для создания аккаунта"
 
-
 class TestCreateCourier:
 
     # тест 1. успешное создание курьера

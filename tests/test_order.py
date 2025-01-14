@@ -28,4 +28,3 @@ def test_get_orders(color):
 
     response_json = response.json()
     assert "track" in response_json
-

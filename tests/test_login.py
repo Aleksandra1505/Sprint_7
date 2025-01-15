@@ -1,9 +1,12 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import allure
 import pytest
 from methods.courier_methods import CourierMethods
 
 class TestLoginCourier:
-
     # тест 1. успешная авторизация  курьера
     @allure.title("успешная авторизация  курьера")
     def test_login_courier(self):

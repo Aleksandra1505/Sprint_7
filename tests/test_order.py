@@ -1,6 +1,11 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import requests
 import pytest
 import allure
+from urls import CREATE_ORDER_URL, BASE_URL
 
 @pytest.mark.parametrize("color", [
     ["BLACK"],
@@ -22,8 +27,7 @@ def test_get_orders(color):
         "color": color
     }
 
-    response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/orders',
-        json=payload)
+    response = requests.post(f'{BASE_URL}{CREATE_ORDER_URL}')
     assert response.status_code == 201
 
     response_json = response.json()

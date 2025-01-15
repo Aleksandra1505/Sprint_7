@@ -1,10 +1,12 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import allure
 import pytest
 from methods.courier_methods import CourierMethods
 from helpers import generate_login_password_name
-
-COURIER_EXIST_MESSAGE = "Этот логин уже существует"
-CREATE_ACCOUNT_NOT_ENOUGH_DATA = "Недостаточно данных для создания аккаунта"
+from tests.constants import DUPLICATE_LOGIN_MESSAGE
 
 class TestCreateCourier:
 
@@ -12,10 +14,23 @@ class TestCreateCourier:
     @allure.title("Успешное создание курьера")
     def test_create_courier(self):
         payload = generate_login_password_name()
-        response = CourierMethods().create_courier(payload)
+        courier_methods = CourierMethods()
 
+        # создаю курьера
+        response = courier_methods.create_courier(payload)
         assert response.status_code == 201
         assert response.json() == {"ok": True}
+
+        # получили id нового курьера
+        response_login = courier_methods.login_courier(payload)
+        assert response_login.status_code == 200
+        courier_id = response_login.json().get("id")
+        assert courier_id is not None
+
+        # удаляю курьера после теста
+        response_delete = courier_methods.delete_courier(courier_id)
+        assert response_delete.status_code == 200
+        assert response_delete.json() == {"ok": True}
 
     # тест 2. нельзя создать 2 одинаковых курьеров
     @allure.title("Нельзя создать двух одинаковых курьеров")
@@ -29,8 +44,7 @@ class TestCreateCourier:
         # Пытаемся создать второго курьера с тем же логином
         response_2 = CourierMethods().create_courier(payload)
         assert response_2.status_code == 409
-        assert response_2.json().get(
-            "message") == "Этот логин уже используется. Попробуйте другой."
+        assert response_2.json().get("message") == DUPLICATE_LOGIN_MESSAGE
 
     # тест 3. нельзя создать курьера без заполнения какого либо обязательного поля
     @allure.title("Ошибка при отсутствии обязательных полей")
